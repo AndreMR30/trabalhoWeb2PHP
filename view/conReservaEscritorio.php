@@ -2,6 +2,7 @@
  
 include "../model/escritorio.class.php";
 include "../model/ReservaEscritorio.class.php";
+include '../controller/init.php';
 session_start();
 
 ?>
@@ -42,7 +43,7 @@ session_start();
 					</div>
 					<div class="row">
 						<div class="col-12 col-lg-6">
-							<form action="#" method="GET">
+							<!-- <form action="#" method="GET">
 								<div class="row">	
 									<div class="col-12 col-lg-6">
 										<input type="text" name="nomeReservaEscritorio" class="form-control" placeholder="nome, sala ou data">
@@ -52,7 +53,7 @@ session_start();
 										<button class="btn btn-warning" type="cancel">LIMPAR</button>
 									</div>	
 								</div>	
-							</form>
+							</form> -->
 						</div>
 					</div>
 					<div class="row">
@@ -61,42 +62,61 @@ session_start();
 
 							if(isset($_SESSION['reserE'])){
 								echo "<table class='table'>";
-								echo "<tr><th>del / edit</th><th>NOME DO CLIENTE</th><th>NOME DO LOCAL</th><th>DATA</th>
+								echo "<tr><th>del / edit</th><th>NOME DA RESERVA</th><th>NOME DO CLIENTE</th><th>NOME DO ESCRITORIO</th><th>DATA DA RESERVA</th>
 									</tr>";
-								foreach($_SESSION['reserE'] as $i=>$reservaEscritorio){
+
+									$conexao = db_connect();
+
+									$consulta = $conexao->query("SELECT * FROM tb_reservaescritorio");
+	
+									while ($row = $consulta->fetch()) {
+										echo "<tr>
+										<td><input name='id' type='hidden' value=".$row['id'].">
+										<i class='fa fa-trash btn btn-danger'></i>
+										<i class='fa fa-edit btn btn-warning'></i>
+										</td>
+										<td>".$row['nomeReservaEscritorio']."</td>
+										<td>".$row['idNomeCliente']."</td>
+										<td>".$row['idNomeEscritorio']."</td>
+										<td>".$row['dataReserva']."</td>
+										</tr>";
+									}
+
+
+								// foreach($_SESSION['reserE'] as $i=>$reservaEscritorio){
 									
-									$nomeReservaEscritorio = $reservaEscritorio->getNomeReservaEscritorio();
-									$local = $reservaEscritorio->getLocal();
-									$data = $reservaEscritorio->getData();
-									if(isset($_GET['nomeReservaEscritorio']) and ((str_contains($nomeReservaEscritorio,$_GET['nomeReservaEscritorio'])
-									or  str_contains($local,$_GET['nomeReservaEscritorio']) or  str_contains($data,$_GET['nomeReservaEscritorio']))))									
-									{	
+								// 	$nomeReservaEscritorio = $reservaEscritorio->getNomeReservaEscritorio();
+								// 	$local = $reservaEscritorio->getLocal();
+								// 	$data = $reservaEscritorio->getData();
+								// 	if(isset($_GET['nomeReservaEscritorio']) and ((str_contains($nomeReservaEscritorio,$_GET['nomeReservaEscritorio'])
+								// 	or  str_contains($local,$_GET['nomeReservaEscritorio']) or  str_contains($data,$_GET['nomeReservaEscritorio']))))									
+								// 	{	
 										
 
 									
-										echo "<tr>
-										<td>
-										<div class='row'>
+								// 		echo "<tr>
+								// 		<td>
+								// 		<div class='row'>
 										
-										<form action='cadReservaEscritorio.php' method='GET' style='display:inline;'>
-										<input type='hidden' name='cod' value='$i'>
-										<input type='hidden' name='nomeReservaEscritorio' value='$nomeReservaEscritorio'>          
-										<input type='hidden' name='local' value='$local'>          
-										<input type='hidden' name='data' value='$data'>          
-										<button type='submit' class='btn-danger' name='delreserE'>
-										<i class='fa fa-trash'></i>
-									</button>
+								// 		<form action='cadReservaEscritorio.php' method='GET' style='display:inline;'>
+								// 		<input type='hidden' name='cod' value='$i'>
+								// 		<input type='hidden' name='nomeReservaEscritorio' value='$nomeReservaEscritorio'>          
+								// 		<input type='hidden' name='local' value='$local'>          
+								// 		<input type='hidden' name='data' value='$data'>          
+								// 		<button type='submit' class='btn-danger' name='delreserE'>
+								// 		<i class='fa fa-trash'></i>
+								// 	</button>
 																		
-									<button type='submit' class='btn-info' name='edireserE'>
-									<i class='fa fa-edit'></i>
-									</button>
-										</form> 
-										</div>      
-										</td>       
-										<td>$nomeReservaEscritorio</td><td>$local</td><td>$data</td>
-										</tr>";  
-									} 
-								}    
+								// 	<button type='submit' class='btn-info' name='edireserE'>
+								// 	<i class='fa fa-edit'></i>
+								// 	</button>
+								// 		</form> 
+								// 		</div>      
+								// 		</td>       
+								// 		<td>$nomeReservaEscritorio</td><td>$local</td><td>$data</td>
+								// 		</tr>";  
+								// 	} 
+								// }    
 								
 								echo "</table>";
 							}

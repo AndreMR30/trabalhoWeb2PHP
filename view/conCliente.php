@@ -1,6 +1,7 @@
 <?php
  
 include "../model/cliente.class.php";
+include '../controller/init.php';
 session_start();
 
 
@@ -43,7 +44,7 @@ session_start();
 					</div>
 					<div class="row">
 						<div class="col-12 col-lg-6">
-							<form action="#" method="GET">
+							<!-- <form action="#" method="GET">
 								<div class="row">	
 									<div class="col-12 col-lg-6">
 										<input type="text" name="nomeCliente" class="form-control" placeholder="nome, contato ou cidade">
@@ -53,7 +54,7 @@ session_start();
 										<button class="btn btn-warning" type="cancel">LIMPAR</button>
 									</div>	
 								</div>	
-							</form>
+							</form> -->
 						</div>
 					</div>
 					<div class="row">
@@ -63,47 +64,69 @@ session_start();
 							if(isset($_SESSION['Cli'])){
 								echo "<table class='table'>";
 								echo "<tr><th>del / edit</th><th>NOME CLIENTE</th><th>E-MAIL</th><th>CPF</th><th>CONTATO</th><th>ENDEREÇO</th><th>CIDADE</th><th>ESTADO</th></tr>";
-								foreach($_SESSION['Cli'] as $i=>$cliente){
+							
+								$conexao = db_connect();
+
+								$consulta = $conexao->query("SELECT * FROM tb_cliente");
+
+								while ($row = $consulta->fetch()) {
+									echo "<tr>
+									<td><input name='id' type='hidden' value=".$row['id'].">
+									<i class='fa fa-trash btn btn-danger'></i>
+									<i class='fa fa-edit btn btn-warning'></i>
+									</td>
+									<td>".$row['nomeCliente']."</td>
+									<td>".$row['email']."</td>
+									<td>".$row['cpf']."</td>
+									<td>".$row['contato']."</td>
+									<td>".$row['endereco']."</td>
+									<td>".$row['cidade']."</td>
+									<td>".$row['estado']."</td>
+									</tr>";
+								}
+							
+							
+								// foreach($_SESSION['Cli'] as $i=>$cliente){
 									
-									$nomeCliente = $cliente->getNomeCliente();
-									$email = $cliente->getEmail();
-									$cpf = $cliente->getCpf();
-									$contato = $cliente->getContato();
-									$endereco = $cliente->getEndereco();
-									$cidade = $cliente->getCidade();
-									$estado = $cliente->getEstado();
+								// 	$nomeCliente = $cliente->getNomeCliente();
+								// 	$email = $cliente->getEmail();
+								// 	$cpf = $cliente->getCpf();
+								// 	$contato = $cliente->getContato();
+								// 	$endereco = $cliente->getEndereco();
+								// 	$cidade = $cliente->getCidade();
+								// 	$estado = $cliente->getEstado();
 									
-									if(isset($_GET['nomeCliente']) and ((str_contains($nomeCliente,$_GET['nomeCliente'])
-									or str_contains($contato,$_GET['nomeCliente']) or str_contains($cidade,$_GET['nomeCliente'])))									
-									){	
+								// 	if(isset($_GET['nomeCliente']) and ((str_contains($nomeCliente,$_GET['nomeCliente'])
+								// 	or str_contains($contato,$_GET['nomeCliente']) or str_contains($cidade,$_GET['nomeCliente'])))									
+								// 	){	
 										
-										echo "<tr>
-										<td>
-											<div class='row'>
+								// 		echo "<tr>
+								// 		<td>
+								// 			<div class='row'>
 											
-												<form action='cadCliente.php' method='GET' style='display:inline;'>
-													<input type='hidden' name='cod' value='$i'>
-													<input type='hidden' name='nomeCliente' value='$nomeCliente'>  
-													<input type='hidden' name='email' value='$email'>
-													<input type='hidden' name='cpf' value='$cpf'>  	        
-													<input type='hidden' name='contato' value='$contato'>  	        
-													<input type='hidden' name='endereco' value='$endereco'>  	        
-													<input type='hidden' name='cidade' value='$cidade'>  	        
-													<input type='hidden' name='estado' value='$estado'>  	        
-													<button type='submit' class='btn-danger' name='delCli'>
-														<i class='fa fa-trash'></i>
-													</button>
+								// 				<form action='cadCliente.php' method='GET' style='display:inline;'>
+								// 					<input type='hidden' name='cod' value='$i'>
+								// 					<input type='hidden' name='nomeCliente' value='$nomeCliente'>  
+								// 					<input type='hidden' name='email' value='$email'>
+								// 					<input type='hidden' name='cpf' value='$cpf'>  	        
+								// 					<input type='hidden' name='contato' value='$contato'>  	        
+								// 					<input type='hidden' name='endereco' value='$endereco'>  	        
+								// 					<input type='hidden' name='cidade' value='$cidade'>  	        
+								// 					<input type='hidden' name='estado' value='$estado'>  	        
+								// 					<button type='submit' class='btn-danger' name='delCli'>
+								// 						<i class='fa fa-trash'></i>
+								// 					</button>
 																						
-													<button type='submit' class='btn-info' name='ediCli'>
-													<i class='fa fa-edit'></i>
-													</button>
-												</form> 
+								// 					<button type='submit' class='btn-info' name='ediCli'>
+								// 					<i class='fa fa-edit'></i>
+								// 					</button>
+								// 				</form> 
 												
-											</div>      
-										</td>       
-										<td>$nomeCliente</td><td>$email</td><td>$cpf</td><td>$contato</td><td>$endereco</td><td>$cidade</td><td>$estado</td></tr>";  
-									} 
-								}    
+								// 			</div>      
+								// 		</td>       
+								// 		<td>$nomeCliente</td><td>$email</td><td>$cpf</td><td>$contato</td><td>$endereco</td><td>$cidade</td><td>$estado</td></tr>";  
+								// 	} 
+								// }    
 								
 								echo "</table>";
 							}

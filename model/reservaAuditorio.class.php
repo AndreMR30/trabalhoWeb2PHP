@@ -3,35 +3,43 @@
     class ReservaAuditorio {
         
         private $nomeReservaAuditorio;
-        private $local;
-        private $data;
+        private $nomeCliente;
+        private $nomeAuditorio;
+        private $dataReserva;
        
 
-        public function __construct($nomeReservaAuditorio, $local, $data) {
+        public function __construct($nomeReservaAuditorio, $nomeCliente, $nomeAuditorio, $dataReserva) {
             $this->nomeReservaAuditorio = $nomeReservaAuditorio;
-            $this->local = $local;
-            $this->data = $data;
+            $this->nomeCliente = $nomeCliente;
+            $this->nomeAuditorio = $nomeAuditorio;
+            $this->dataReserva = $dataReserva;
             
         }
 
         public function setNomeReservaAuditorio($nomeReservaAuditorio){
             $this->nomeReservaAuditorio = $nomeReservaAuditorio;
        }
-        public function setLocal($local){
-            $this->local = $local;
+        public function setNomeCliente($nomeCliente){
+            $this->nomeCliente = $nomeCliente;
        }
-       public function setData($data){
-            $this->data = $data;
+       public function setNomeAuditorio($nomeAuditorio){
+            $this->nomeAuditorio = $nomeAuditorio;
+       }
+       public function setDataReserva($dataReserva){
+            $this->dataReserva = $dataReserva;
        }
        
        public function getNomeReservaAuditorio(){
             return $this->nomeReservaAuditorio;
        }
-       public function getLocal(){
-            return $this->local;
+       public function getNomeCliente(){
+            return $this->nomeCliente;
        }
-       public function getData(){
-            return $this->data;
+       public function getNomeAuditorio(){
+            return $this->nomeAuditorio;
+       }
+       public function getDataReserva(){
+            return $this->dataReserva;
        }
     }
 

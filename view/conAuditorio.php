@@ -1,6 +1,7 @@
 <?php
  
 include "../model/auditorio.class.php";
+include '../controller/init.php';
 session_start();
 
 ?>
@@ -41,7 +42,7 @@ session_start();
 					</div>
 					<div class="row">
 						<div class="col-12 col-lg-6">
-							<form action="#" method="GET">
+							<!-- <form action="#" method="GET">
 								<div class="row">	
 									<div class="col-12 col-lg-6">
 										<input type="text" name="nomeAuditorio" class="form-control" placeholder="nome, qtd de pessoas ou cidade">
@@ -51,7 +52,7 @@ session_start();
 										<button class="btn btn-warning" type="cancel">LIMPAR</button>
 									</div>	
 								</div>	
-							</form>
+							</form> -->
 						</div>
 					</div>
 					<div class="row">
@@ -63,50 +64,72 @@ session_start();
 								echo "<tr><th>del / edit</th><th>NOME DO AUDITÓRIO</th><th>PROPRIETÁRIO</th><th>E-MAIL</th>
 								<th>QUANTIDADE PESSOAS</th><th>ENDEREÇO</th><th>CIDADE</th><th>ESTADO</th>
 								</tr>";
-								foreach($_SESSION['Audi'] as $i=>$auditorio){
+
+								$conexao = db_connect();
+
+								$consulta = $conexao->query("SELECT * FROM tb_auditorio");
+
+								while ($row = $consulta->fetch()) {
+									echo "<tr>
+									<td><input name='id' type='hidden' value=".$row['id'].">
+									<i class='fa fa-trash btn btn-danger'></i>
+									<i class='fa fa-edit btn btn-warning'></i>
+									</td>
+									<td>".$row['nomeAuditorio']."</td>
+									<td>".$row['idProprietario']."</td>
+									<td>".$row['email']."</td>
+									<td>".$row['qtdPessoa']."</td>
+									<td>".$row['endereco']."</td>
+									<td>".$row['cidade']."</td>
+									<td>".$row['estado']."</td>
+									</tr>";
+								}
+
+
+								// foreach($_SESSION['Audi'] as $i=>$auditorio){
 									
-									$nomeAuditorio = $auditorio->getNomeAuditorio();
-									$proprietario = $auditorio->getProprietario();
-									$email = $auditorio->getEmail();
-									$qtdPessoa = $auditorio->getQtdPessoa();
-									$endereco = $auditorio->getEndereco();
-									$cidade = $auditorio->getCidade();
-									$estado = $auditorio->getEstado();
-									if(isset($_GET['nomeAuditorio']) and ((str_contains($nomeAuditorio,$_GET['nomeAuditorio'])
-									or  str_contains($cidade,$_GET['nomeAuditorio']) or  str_contains($qtdPessoa,$_GET['nomeAuditorio']))))									
-									{	
+								// 	$nomeAuditorio = $auditorio->getNomeAuditorio();
+								// 	$proprietario = $auditorio->getProprietario();
+								// 	$email = $auditorio->getEmail();
+								// 	$qtdPessoa = $auditorio->getQtdPessoa();
+								// 	$endereco = $auditorio->getEndereco();
+								// 	$cidade = $auditorio->getCidade();
+								// 	$estado = $auditorio->getEstado();
+								// 	if(isset($_GET['nomeAuditorio']) and ((str_contains($nomeAuditorio,$_GET['nomeAuditorio'])
+								// 	or  str_contains($cidade,$_GET['nomeAuditorio']) or  str_contains($qtdPessoa,$_GET['nomeAuditorio']))))									
+								// 	{	
 										
 
 									
-										echo "<tr>
-										<td>
-										<div class='row'>
+								// 		echo "<tr>
+								// 		<td>
+								// 		<div class='row'>
 										
-										<form action='cadAuditorio.php' method='GET' style='display:inline;'>
-										<input type='hidden' name='cod' value='$i'>
-										<input type='hidden' name='nomeAuditorio' value='$nomeAuditorio'>          
-										<input type='hidden' name='proprietario' value='$proprietario'>          
-										<input type='hidden' name='email' value='$email'>          
-										<input type='hidden' name='qtdPessoa' value='$qtdPessoa'>          
-										<input type='hidden' name='endereco' value='$endereco'>          
-										<input type='hidden' name='cidade' value='$cidade'>          
-										<input type='hidden' name='estado' value='$estado'>          
-										<button type='submit' class='btn-danger' name='delAudi'>
-										<i class='fa fa-trash'></i>
-									</button>
+								// 		<form action='cadAuditorio.php' method='GET' style='display:inline;'>
+								// 		<input type='hidden' name='cod' value='$i'>
+								// 		<input type='hidden' name='nomeAuditorio' value='$nomeAuditorio'>          
+								// 		<input type='hidden' name='proprietario' value='$proprietario'>          
+								// 		<input type='hidden' name='email' value='$email'>          
+								// 		<input type='hidden' name='qtdPessoa' value='$qtdPessoa'>          
+								// 		<input type='hidden' name='endereco' value='$endereco'>          
+								// 		<input type='hidden' name='cidade' value='$cidade'>          
+								// 		<input type='hidden' name='estado' value='$estado'>          
+								// 		<button type='submit' class='btn-danger' name='delAudi'>
+								// 		<i class='fa fa-trash'></i>
+								// 	</button>
 																		
-									<button type='submit' class='btn-info' name='ediAudi'>
-									<i class='fa fa-edit'></i>
-									</button>
-										</form> 
-										</div>      
-										</td>       
-										<td>$nomeAuditorio</td><td>$proprietario</td><td>$email</td>
-										<td>$qtdPessoa</td><td>$endereco</td>
-										<td>$cidade</td><td>$estado</td>
-										</tr>";  
-									} 
-								}    
+								// 	<button type='submit' class='btn-info' name='ediAudi'>
+								// 	<i class='fa fa-edit'></i>
+								// 	</button>
+								// 		</form> 
+								// 		</div>      
+								// 		</td>       
+								// 		<td>$nomeAuditorio</td><td>$proprietario</td><td>$email</td>
+								// 		<td>$qtdPessoa</td><td>$endereco</td>
+								// 		<td>$cidade</td><td>$estado</td>
+								// 		</tr>";  
+								// 	} 
+								// }    
 								
 								echo "</table>";
 							}

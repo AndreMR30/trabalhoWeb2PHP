@@ -3,35 +3,43 @@
     class ReservaEscritorio {
         
         private $nomeReservaEscritorio;
-        private $local;
-        private $data;
+        private $nomeCliente;
+        private $nomeEscritorio;
+        private $dataReserva;
        
 
-        public function __construct($nomeReservaEscritorio, $local, $data) {
+        public function __construct($nomeReservaEscritorio, $nomeCliente, $nomeEscritorio, $dataReserva) {
             $this->nomeReservaEscritorio = $nomeReservaEscritorio;
-            $this->local = $local;
-            $this->data = $data;
+            $this->nomeCliente = $nomeCliente;
+            $this->nomeEscritorio = $nomeEscritorio;
+            $this->dataReserva = $dataReserva;
             
         }
 
         public function setNomeReservaEscritorio($nomeReservaEscritorio){
             $this->nomeReservaEscritorio = $nomeReservaEscritorio;
        }
-        public function setLocal($local){
-            $this->local = $local;
+        public function setNomeCliente($nomeCliente){
+            $this->nomeCliente = $nomeCliente;
        }
-       public function setData($data){
-            $this->data = $data;
+       public function setNomeEscritorio($nomeEscritorio){
+            $this->nomeEscritorio = $nomeEscritorio;
+       }
+       public function setDataReserva($dataReserva){
+            $this->dataReserva = $dataReserva;
        }
        
        public function getNomeReservaEscritorio(){
             return $this->nomeReservaEscritorio;
        }
-       public function getLocal(){
-            return $this->local;
+       public function getNomeCliente(){
+            return $this->nomeCliente;
        }
-       public function getData(){
-            return $this->data;
+       public function getNomeEscritorio(){
+            return $this->nomeEscritorio;
+       }
+       public function getDataReserva(){
+            return $this->dataReserva;
        }
     }
 

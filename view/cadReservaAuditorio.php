@@ -6,6 +6,7 @@ include "../model/reservaSalaReuniao.class.php";
 include "../model/cliente.class.php";
 include "../model/escritorio.class.php";
 include "../model/auditorio.class.php";
+include "../controller/init.php";
 
 session_start();
 
@@ -54,14 +55,16 @@ session_start();
 					if(isset($_GET['edireserA']) and isset($_GET['cod']) ){
 						$cod = $_GET['cod'];
 						$nomeReservaAuditorio = $_GET['nomeReservaAuditorio'];
-						$local =$_GET['local'];
-						$data =$_GET['data'];
+						$nomeCliente =$_GET['nomeCliente'];
+						$nomeReservaAuditorio =$_GET['nomeReservaAuditorio'];
+						$dataReserva =$_GET['dataReserva'];
 						
 					}else{
 						$cod = "";						
 						$nomeReservaAuditorio = "";
-						$local ="";
-						$data ="";
+						$nomeCliente ="";
+						$nomeReservaAuditorio ="";
+						$dataReserva ="";
 					}
                 
 		    ?>	
@@ -76,29 +79,47 @@ session_start();
 					<div class="form-row">
 					<div class="form-group col-md-6">
                 <div class="form-group col-md-6">
-            <label for="inputNome">Nome Cliente</label>
-            <input type="text" class="form-control" name="nomeReservaAuditorio" placeholder="Digite o Cliente" required>
+            <label for="inputNome">Nome do Auditório</label>
+            <input type="text" class="form-control" name="nomeReservaAuditorio" placeholder="Digite o nome do Auditório" required>
         </div>
 
 
 
-            <label>Local</label>
-            <select name="local" class="form-control"  >
+		<label>Nome do Cliente</label>
+            <select name="nomeCliente" class="form-control"  >
                 <option value="">Selecione</option>
 
                 <?php 
-                    if (isset($_SESSION['Audi'])) {
-                        for ($i=0; $i <count ($_SESSION['Audi']); $i++) { 
-                            $na=$_SESSION['Audi'] [$i]->getNomeAuditorio ();
-                            echo "<option value='$na'>$na</option>";
+                $conexao = db_connect();
+                    $consulta = $conexao->query("SELECT * FROM tb_cliente");
+                    while ($row = $consulta->fetch()) {
+                        $idC = $row['id'];
+                        $n = $row['nomeCliente'];
+                         echo "<option value='$idC'>$n</option>";
                         }
-                    }
-                ?>
+                 ?>
+        </select>
+
+		<label>Nome do Auditório</label>
+            <select name="nomeAuditorio" class="form-control"  >
+                <option value="">Selecione</option>
+
+                <?php 
+                $conexao = db_connect();
+                    $consulta = $conexao->query("SELECT * FROM tb_auditorio");
+                    while ($row = $consulta->fetch()) {
+                        $idNa = $row['id'];
+                        $nA = $row['nomeAuditorio'];
+                        $c = $row['cidade'];
+                         echo "<option value='$idNa'>$nA Local: $c</option>";
+                        }
+                 ?>
         </select> 
+
         </div>
         <div class="form-group col-md-6">
             <label for="inputDate">Data</label>
-            <input type="date" class="form-control" name="data" value="<?php echo $data; ?>" required>
+            <input type="date" class="form-control" name="dataReserva" value="<?php echo $data; ?>" required>
         </div>
         
     <button type="submit" class="btn btn-primary">Enviar</button>

@@ -1,6 +1,7 @@
 <?php
  
 include "../model/escritorio.class.php";
+include '../controller/init.php';
 session_start();
 
 ?>
@@ -41,7 +42,7 @@ session_start();
 					</div>
 					<div class="row">
 						<div class="col-12 col-lg-6">
-							<form action="#" method="GET">
+							<!-- <form action="#" method="GET">
 								<div class="row">	
 									<div class="col-12 col-lg-6">
 										<input type="text" name="nomeEscritorio" class="form-control" placeholder="nome, qtd de computador ou cidade">
@@ -51,7 +52,7 @@ session_start();
 										<button class="btn btn-warning" type="cancel">LIMPAR</button>
 									</div>	
 								</div>	
-							</form>
+							</form> -->
 						</div>
 					</div>
 					<div class="row">
@@ -63,50 +64,73 @@ session_start();
 								echo "<tr><th>del / edit</th><th>NOME DO ESCRITÓRIO</th><th>PROPRIETÁRIO</th><th>E-MAIL</th>
 								<th>QUANTIDADE COMPUTADORES</th><th>ENDEREÇO</th><th>CIDADE</th><th>ESTADO</th>
 								</tr>";
-								foreach($_SESSION['Escri'] as $i=>$escritorio){
+
+								$conexao = db_connect();
+
+								$consulta = $conexao->query("SELECT * FROM tb_escritorio");
+
+								while ($row = $consulta->fetch()) {
+									echo "<tr>
+									<td><input name='id' type='hidden' value=".$row['id'].">
+									<i class='fa fa-trash btn btn-danger'></i>
+									<i class='fa fa-edit btn btn-warning'></i>
+									</td>
+									<td>".$row['nomeEscritorio']."</td>
+									<td>".$row['idProprietario']."</td>
+									<td>".$row['email']."</td>
+									<td>".$row['computador']."</td>
+									<td>".$row['endereco']."</td>
+									<td>".$row['cidade']."</td>
+									<td>".$row['estado']."</td>
+									</tr>";
+								}
+
+
+
+								// foreach($_SESSION['Escri'] as $i=>$escritorio){
 									
-									$nomeEscritorio = $escritorio->getNomeEscritorio();
-									$proprietario = $escritorio->getProprietario();
-									$email = $escritorio->getEmail();
-									$computador = $escritorio->getComputador();
-									$endereco = $escritorio->getEndereco();
-									$cidade = $escritorio->getCidade();
-									$estado = $escritorio->getEstado();
-									if(isset($_GET['nomeEscritorio']) and ((str_contains($nomeEscritorio,$_GET['nomeEscritorio'])
-									or  str_contains($cidade,$_GET['nomeEscritorio']) or  str_contains($computador,$_GET['nomeEscritorio']))))									
-									{	
+								// 	$nomeEscritorio = $escritorio->getNomeEscritorio();
+								// 	$proprietario = $escritorio->getProprietario();
+								// 	$email = $escritorio->getEmail();
+								// 	$computador = $escritorio->getComputador();
+								// 	$endereco = $escritorio->getEndereco();
+								// 	$cidade = $escritorio->getCidade();
+								// 	$estado = $escritorio->getEstado();
+								// 	if(isset($_GET['nomeEscritorio']) and ((str_contains($nomeEscritorio,$_GET['nomeEscritorio'])
+								// 	or  str_contains($cidade,$_GET['nomeEscritorio']) or  str_contains($computador,$_GET['nomeEscritorio']))))									
+								// 	{	
 										
 
 									
-										echo "<tr>
-										<td>
-										<div class='row'>
+								// 		echo "<tr>
+								// 		<td>
+								// 		<div class='row'>
 										
-										<form action='cadEscritorio.php' method='GET' style='display:inline;'>
-										<input type='hidden' name='cod' value='$i'>
-										<input type='hidden' name='nomeEscritorio' value='$nomeEscritorio'>          
-										<input type='hidden' name='proprietario' value='$proprietario'>          
-										<input type='hidden' name='email' value='$email'>          
-										<input type='hidden' name='computador' value='$computador'>          
-										<input type='hidden' name='endereco' value='$endereco'>          
-										<input type='hidden' name='cidade' value='$cidade'>          
-										<input type='hidden' name='estado' value='$estado'>          
-										<button type='submit' class='btn-danger' name='delEscri'>
-										<i class='fa fa-trash'></i>
-									</button>
+								// 		<form action='cadEscritorio.php' method='GET' style='display:inline;'>
+								// 		<input type='hidden' name='cod' value='$i'>
+								// 		<input type='hidden' name='nomeEscritorio' value='$nomeEscritorio'>          
+								// 		<input type='hidden' name='proprietario' value='$proprietario'>          
+								// 		<input type='hidden' name='email' value='$email'>          
+								// 		<input type='hidden' name='computador' value='$computador'>          
+								// 		<input type='hidden' name='endereco' value='$endereco'>          
+								// 		<input type='hidden' name='cidade' value='$cidade'>          
+								// 		<input type='hidden' name='estado' value='$estado'>          
+								// 		<button type='submit' class='btn-danger' name='delEscri'>
+								// 		<i class='fa fa-trash'></i>
+								// 	</button>
 																		
-									<button type='submit' class='btn-info' name='ediEscri'>
-									<i class='fa fa-edit'></i>
-									</button>
-										</form> 
-										</div>      
-										</td>       
-										<td>$nomeEscritorio</td><td>$proprietario</td><td>$email</td>
-										<td>$computador</td><td>$endereco</td>
-										<td>$cidade</td><td>$estado</td>
-										</tr>";  
-									} 
-								}    
+								// 	<button type='submit' class='btn-info' name='ediEscri'>
+								// 	<i class='fa fa-edit'></i>
+								// 	</button>
+								// 		</form> 
+								// 		</div>      
+								// 		</td>       
+								// 		<td>$nomeEscritorio</td><td>$proprietario</td><td>$email</td>
+								// 		<td>$computador</td><td>$endereco</td>
+								// 		<td>$cidade</td><td>$estado</td>
+								// 		</tr>";  
+								// 	} 
+								// }    
 								
 								echo "</table>";
 							}

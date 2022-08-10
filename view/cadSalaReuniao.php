@@ -2,6 +2,7 @@
  
 include "../model/proprietario.class.php";
 include "../model/salaReuniao.class.php";
+include "../controller/init.php";
 session_start();
 
 ?>
@@ -87,14 +88,15 @@ session_start();
                 <option value="">Selecione</option>
 
                 <?php 
-                    if (isset($_SESSION['prop'])) {
-                        for ($i=0; $i <count ($_SESSION['prop']); $i++) { 
-                            $na=$_SESSION['prop'] [$i]->getNome ();
-                            echo "<option value='$na'>$na</option>";
+                $conexao = db_connect();
+                    $consulta = $conexao->query("SELECT * FROM tb_proprietario");
+                    while ($row = $consulta->fetch()) {
+                        $idP = $row['id'];
+                        $n = $row['nome'];
+                         echo "<option value='$idP'>$n</option>";
                         }
-                    }
-                ?>
-        </select> 
+                 ?>
+            </select> 
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail4">Email</label>

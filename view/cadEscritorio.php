@@ -2,6 +2,7 @@
  
 include "../model/proprietario.class.php";
 include "../model/escritorio.class.php";
+include "../controller/init.php";
 session_start();
 
 ?>
@@ -71,7 +72,7 @@ session_start();
 				<div class="container-fluid p-0">
 
 					<div class="mb-3">
-						<h1 class="h3 d-inline align-middle">CADASTRO DE DE SALA DE REUNIÃO</h1>						
+						<h1 class="h3 d-inline align-middle">CADASTRO DE ESCRITÓRIO</h1>						
 					</div>
 					<form action="../controller/registrar.php" method="GET">
                     <input type="hidden" name="editarEscri" value="<?php echo $cod;?>">
@@ -87,13 +88,14 @@ session_start();
                 <option value="">Selecione</option>
 
                 <?php 
-                    if (isset($_SESSION['prop'])) {
-                        for ($i=0; $i <count ($_SESSION['prop']); $i++) { 
-                            $na=$_SESSION['prop'] [$i]->getNome ();
-                            echo "<option value='$na'>$na</option>";
+                $conexao = db_connect();
+                    $consulta = $conexao->query("SELECT * FROM tb_proprietario");
+                    while ($row = $consulta->fetch()) {
+                        $idP = $row['id'];
+                        $n = $row['nome'];
+                         echo "<option value='$idP'>$n</option>";
                         }
-                    }
-                ?>
+                 ?>
         </select> 
         </div>
         <div class="form-group col-md-6">

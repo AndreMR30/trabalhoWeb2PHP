@@ -7,6 +7,7 @@
  include "../model/reservaSalaReuniao.class.php";
  include "../model/reservaEscritorio.class.php";
  include "../model/reservaAuditorio.class.php";
+ include "init.php";
  session_start();
 
 
@@ -70,11 +71,30 @@
 									$_GET['nome'],$_GET['email'],$_GET['cpf'],$_GET['contato'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 									echo "<h1>PROPRIETÁRIO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['prop'][]= new Proprietario(
+							 $prop = new Proprietario(
 								$_GET['nome'],$_GET['email'],$_GET['cpf'],$_GET['contato'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 							 echo "<h1>PROPRIETÁRIO CADASTRADO!</h1>";
+							$_SESSION['prop'][]= $prop; //INSERE PROPRIETARIO NO ARRAY
+							try {
+								$conecta = db_connect();
+								$n = $prop->getNome();
+								$e = $prop->getEmail();
+								$c = $prop->getCpf();
+								$co = $prop->getContato();
+								$en = $prop->getEndereco();
+								$ci = $prop->getCidade();
+								$es = $prop->getEstado();
+								$comandoSQL = "INSERT INTO tb_proprietario (nome,email,cpf,contato,endereco,cidade,estado)
+								VALUES ('$n','$e','$c','$co','$en','$ci','$es')";
+								$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+								$grava->execute(array());
+								echo '<h1>PROPRIETÁRIO CADASTRADO NO BANCO DE DADOS!</h1>';
+							} catch (PDOException $e) { //casa retorne erro
+								echo '<h1>Erro' . $e->getMessage() . '</h1>';
 							}
-								header("Refresh:4;../view/cadProprietario.php");
+
+							}
+								header("Refresh:5;../view/cadProprietario.php");
 						}
 
 
@@ -92,11 +112,32 @@
 									$_GET['nomeSala'],$_GET['proprietario'],$_GET['email'],$_GET['qtdPessoa'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 									echo "<h1>SALA DE REUNIÃO EDITADA!</h1>";			
 							}else{
-							 $_SESSION['sRei'][]= new SalaReuniao(
+								$sRei = new SalaReuniao(
 								$_GET['nomeSala'],$_GET['proprietario'],$_GET['email'],$_GET['qtdPessoa'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 							 echo "<h1>SALA DE REUNIÃO CADASTRADO!</h1>";
+							 $_SESSION['sRei'][] = $sRei;
+							 try {
+								$conecta = db_connect();
+								$ns = $sRei->getNomeSala();
+								$idP = $sRei->getProprietario();
+								$em = $sRei->getEmail();
+								$qtdp = $sRei->getQtdPessoa();
+								$en = $sRei->getEndereco();
+								$ci = $sRei->getCidade();
+								$es = $sRei->getEstado();
+								$comandoSQL = "INSERT INTO tb_salareuniao (nomeSalaReuniao,idProprietario,email,qtdPessoa,endereco,cidade,estado)
+								VALUES ('$ns','$idP','$em','$qtdp','$en','$ci','$es')";
+								$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+								$grava->execute(array());
+								echo '<h1>SALA DE REUNIÃO CADASTRADO NO BANCO DE DADOS!</h1>';
+							} catch (PDOException $e) { //casa retorne erro
+								echo '<h1>Erro' . $e->getMessage() . '</h1>';
 							}
-								header("Refresh:4;../view/cadSalaReuniao.php");
+				
+							}
+
+							
+								header("Refresh:5;../view/cadSalaReuniao.php");
 						}
 
 
@@ -112,12 +153,33 @@
 									$_GET['nomeEscritorio'],$_GET['proprietario'],$_GET['email'],$_GET['computador'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 									echo "<h1>ESCRITÓRIO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['Escri'][]= new Escritorio(
-								$_GET['nomeEscritorio'],$_GET['proprietario'],$_GET['email'],$_GET['computador'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
-							 echo "<h1>ESCRITÓRIO CADASTRADO!</h1>";
+								$Escri = new Escritorio(
+									$_GET['nomeEscritorio'],$_GET['proprietario'],$_GET['email'],$_GET['computador'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
+								 echo "<h1>ESCRITÓRIO CADASTRADO!</h1>";
+								 $_SESSION['Escri'][] = $Escri;
+								 try {
+									$conecta = db_connect();
+									$ne = $Escri->getNomeEscritorio();
+									$idP = $Escri->getProprietario();
+									$em = $Escri->getEmail();
+									$co = $Escri->getComputador();
+									$en = $Escri->getEndereco();
+									$ci = $Escri->getCidade();
+									$es = $Escri->getEstado();
+									$comandoSQL = "INSERT INTO tb_escritorio (nomeEscritorio,idProprietario,email,computador,endereco,cidade,estado)
+									VALUES ('$ne','$idP','$em','$co','$en','$ci','$es')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>ESCRITÓRIO CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+					
+								}
+	
+								
+									header("Refresh:5;../view/cadEscritorio.php");
 							}
-								header("Refresh:4;../view/cadEscritorio.php");
-						}
 
 
 
@@ -128,12 +190,33 @@
 									$_GET['nomeAuditorio'],$_GET['proprietario'],$_GET['email'],$_GET['qtdPessoa'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 									echo "<h1>AUDITÓRIO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['Audi'][]= new Auditorio(
-								$_GET['nomeAuditorio'],$_GET['proprietario'],$_GET['email'],$_GET['qtdPessoa'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
-							 echo "<h1>AUDITÓRIO CADASTRADO!</h1>";
+								$Audi = new Auditorio(
+									$_GET['nomeAuditorio'],$_GET['proprietario'],$_GET['email'],$_GET['qtdPessoa'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
+								 echo "<h1>AUDITÓRIO CADASTRADO!</h1>";
+								 $_SESSION['Audi'][] = $Audi;
+								 try {
+									$conecta = db_connect();
+									$nA = $Audi->getNomeAuditorio();
+									$idP = $Audi->getProprietario();
+									$em = $Audi->getEmail();
+									$qtdp = $Audi->getQtdPessoa();
+									$en = $Audi->getEndereco();
+									$ci = $Audi->getCidade();
+									$es = $Audi->getEstado();
+									$comandoSQL = "INSERT INTO tb_auditorio (nomeAuditorio,idProprietario,email,qtdPessoa,endereco,cidade,estado)
+									VALUES ('$nA','$idP','$em','$qtdp','$en','$ci','$es')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>AUDITÓRIO CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+					
+								}
+	
+								
+									header("Refresh:5;../view/cadAuditorio.php");
 							}
-								header("Refresh:4;../view/cadAuditorio.php");
-						}
 
 						elseif(isset($_GET['nomeCliente']) and isset($_GET['email'])and isset($_GET['cpf'])and isset($_GET['contato'])and isset($_GET['endereco'])and isset($_GET['cidade'])and isset($_GET['estado'])){
 							if(isset($_GET['editarCli']) and $_GET['editarCli']>=0){
@@ -142,52 +225,119 @@
 									$_GET['nomeCliente'],$_GET['email'],$_GET['cpf'],$_GET['contato'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
 									echo "<h1>CLIENTE EDITADO!</h1>";			
 							}else{
-							 $_SESSION['Cli'][]= new Cliente(
-								$_GET['nomeCliente'],$_GET['email'],$_GET['cpf'],$_GET['contato'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
-							 echo "<h1>CLIENTE CADASTRADO!</h1>";
-							}
+								$Cli = new Cliente(
+									$_GET['nomeCliente'],$_GET['email'],$_GET['cpf'],$_GET['contato'],$_GET['endereco'],$_GET['cidade'],$_GET['estado']);
+								 echo "<h1>CLIENTE CADASTRADO!</h1>";
+								$_SESSION['Cli'][]= $Cli; //INSERE Cliente  NO ARRAY
+								try {
+									$conecta = db_connect();
+									$nc = $Cli->getNomeCliente();
+									$e = $Cli->getEmail();
+									$c = $Cli->getCpf();
+									$co = $Cli->getContato();
+									$en = $Cli->getEndereco();
+									$ci = $Cli->getCidade();
+									$es = $Cli->getEstado();
+									$comandoSQL = "INSERT INTO tb_cliente (nomeCliente,email,cpf,contato,endereco,cidade,estado)
+									VALUES ('$nc','$e','$c','$co','$en','$ci','$es')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>CLIENTE CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+	
+								}
 								header("Refresh:4;../view/cadCliente.php");
 						}
 
-						elseif(isset($_GET['nomeReserva']) and isset($_GET['local'])and isset($_GET['data'])){
+						elseif(isset($_GET['nomeReserva']) and isset($_GET['nomeCliente'])and isset($_GET['nomeSalaReuniao'])and isset($_GET['dataReserva'])){
 							if(isset($_GET['editarreser']) and $_GET['editarreser']>=0){
 								$i=$_GET['editarreser'];  
 								$_SESSION['reser'][$i] = new ReservaSalaReuniao(
-									$_GET['nomeReserva'],$_GET['local'],$_GET['data']);
+									$_GET['nomeReserva'],$_GET['nomeCliente'],$_GET['nomeSalaReuniao'],$_GET['dataReserva']);
 									echo "<h1>RESERVA DE SALA DE REUNIÃO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['reser'][]= new ReservaSalaReuniao(
-								$_GET['nomeReserva'],$_GET['local'],$_GET['data']);
-							 echo "<h1>RESERVA DE SALA DE REUNIÃO CADASTRADA!</h1>";
-							}
+								$reser = new ReservaSalaReuniao(
+									$_GET['nomeReserva'],$_GET['nomeCliente'],$_GET['nomeSalaReuniao'],$_GET['dataReserva']);
+								 echo "<h1>RESERVA DE SALA DE REUNIÃO CADASTRADO!</h1>";
+								 $_SESSION['reser'][] = $reser;
+								 try {
+									$conecta = db_connect();
+									$nr = $reser->getNomeReserva();
+									$idC = $reser->getNomeCliente();
+									$idSr = $reser->getNomeSalaReuniao();
+									$d = $reser->getDataReserva();
+									$comandoSQL = "INSERT INTO tb_reservasalareuniao (nomeReserva,idNomeCliente,idNomeSalaReuniao,dataReserva)
+									VALUES ('$nr','$idC','$idSr','$d')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>RESERVA DE SALA DE REUNIÃO CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+					
+								}
 								header("Refresh:4;../view/cadReservaSalaReuniao.php");
 						}
 
-						elseif(isset($_GET['nomeReservaEscritorio']) and isset($_GET['local'])and isset($_GET['data'])){
+						elseif(isset($_GET['nomeReservaEscritorio']) and isset($_GET['nomeCliente'])and isset($_GET['nomeEscritorio'])and isset($_GET['dataReserva'])){
 							if(isset($_GET['editarreserE']) and $_GET['editarreserE']>=0){
 								$i=$_GET['editarreserE'];  
 								$_SESSION['reserE'][$i] = new ReservaEscritorio(
-									$_GET['nomeReservaEscritorio'],$_GET['local'],$_GET['data']);
+									$_GET['nomeReservaEscritorio'],$_GET['nomeCliente'],$_GET['nomeEscritorio'],$_GET['dataReserva']);
 									echo "<h1>RESERVA ESCRITÓRIO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['reserE'][]= new ReservaEscritorio(
-								$_GET['nomeReservaEscritorio'],$_GET['local'],$_GET['data']);
-							 echo "<h1>RESERVA ESCRITÓRIO CADASTRADA!</h1>";
-							}
+								$reserE = new ReservaEscritorio(
+									$_GET['nomeReservaEscritorio'],$_GET['nomeCliente'],$_GET['nomeEscritorio'],$_GET['dataReserva']);
+								 echo "<h1>RESERVA DE ESCRITÓRIO CADASTRADO!</h1>";
+								 $_SESSION['reserE'][] = $reserE;
+								 try {
+									$conecta = db_connect();
+									$nre = $reserE->getNomeReservaEscritorio();
+									$idC = $reserE->getNomeCliente();
+									$idNe = $reserE->getNomeEscritorio();
+									$d = $reserE->getDataReserva();
+									$comandoSQL = "INSERT INTO tb_reservaescritorio (nomeReservaEscritorio,idNomeCliente,idNomeEscritorio,dataReserva)
+									VALUES ('$nre','$idC','$idNe','$d')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>RESERVA DE ESCRITORIO CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+					
+								}
 								header("Refresh:4;../view/cadReservaEscritorio.php");
 						}
 
-						elseif(isset($_GET['nomeReservaAuditorio']) and isset($_GET['local'])and isset($_GET['data'])){
+						elseif(isset($_GET['nomeReservaAuditorio']) and isset($_GET['nomeCliente'])and isset($_GET['nomeAuditorio'])and isset($_GET['dataReserva'])){
 							if(isset($_GET['editarreserA']) and $_GET['editarreserA']>=0){
 								$i=$_GET['editarreserA'];  
 								$_SESSION['reserA'][$i] = new ReservaAuditorio(
-									$_GET['nomeReservaAuditorio'],$_GET['local'],$_GET['data']);
+									$_GET['nomeReservaAuditorio'],$_GET['nomeCliente'],$_GET['nomeAuditorio'],$_GET['dataReserva']);
 									echo "<h1>RESERVA AUDITÓRIO EDITADO!</h1>";			
 							}else{
-							 $_SESSION['reserA'][]= new ReservaAuditorio(
-								$_GET['nomeReservaAuditorio'],$_GET['local'],$_GET['data']);
-							 echo "<h1>RESERVA AUDITÓRIO CADASTRADA!</h1>";
-							}
+								$reserA = new ReservaAuditorio(
+									$_GET['nomeReservaAuditorio'],$_GET['nomeCliente'],$_GET['nomeAuditorio'],$_GET['dataReserva']);
+								 echo "<h1>RESERVA DE ESCRITÓRIO CADASTRADO!</h1>";
+								 $_SESSION['reserA'][] = $reserA;
+								 try {
+									$conecta = db_connect();
+									$nra = $reserA->getNomeReservaAuditorio();
+									$idC = $reserA->getNomeCliente();
+									$idNa = $reserA->getNomeReservaAuditorio();
+									$d = $reserA->getDataReserva();
+									$comandoSQL = "INSERT INTO tb_reservaauditorio (nomeReservaAuditorio,idNomeCliente,idNomeAuditorio,dataReserva)
+									VALUES ('$nra','$idC','$idNa','$d')";
+									$grava = $conecta->prepare($comandoSQL); //Teste no SQL
+									$grava->execute(array());
+									echo '<h1>RESERVA DE ESCRITORIO CADASTRADO NO BANCO DE DADOS!</h1>';
+								} catch (PDOException $e) { //casa retorne erro
+									echo '<h1>Erro' . $e->getMessage() . '</h1>';
+								}
+					
+								}
 								header("Refresh:4;../view/cadReservaAuditorio.php");
 						}
 
